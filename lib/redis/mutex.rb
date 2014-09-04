@@ -3,7 +3,7 @@ require "securerandom"
 
 class Redis::Mutex
 
-  UNLOCK_SCRIPT = <<-SCRIPT
+  UNLOCK_SCRIPT = <<-SCRIPT.freeze
     if redis.call("get",KEYS[1]) == ARGV[1]
     then
       return redis.call("del",KEYS[1])
@@ -12,7 +12,7 @@ class Redis::Mutex
     end
   SCRIPT
 
-  REFRESH_SCRIPT = <<-SCRIPT
+  REFRESH_SCRIPT = <<-SCRIPT.freeze
     if redis.call("get",KEYS[1]) == ARGV[1]
     then
       return redis.call("expire",KEYS[1],ARGV[2])
