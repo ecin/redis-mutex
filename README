@@ -4,8 +4,6 @@ A Redis-backed mutex that is a (almost 100%) complete drop-in for the Mutex clas
 found in Ruby's standard library.
 
 Differences:
-- Redis::Mutex#synchronize raises ArgumentError instead of ThreadError if no block
-  is passed.
 - Redis::Mutex#unlock does not raise ThreadError if the lock hasn't been acquired.
 - Redis::Mutex#unlock returns a boolean instead of self.
 

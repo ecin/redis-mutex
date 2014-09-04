@@ -56,7 +56,7 @@ class Redis::Mutex
   end
 
   def synchronize
-    raise ArgumentError, "must be called with a block" unless block_given?
+    raise ThreadError, "must be called with a block" unless block_given?
 
     lock
     yield
