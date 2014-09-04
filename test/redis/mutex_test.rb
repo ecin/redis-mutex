@@ -118,6 +118,16 @@ describe Redis::Mutex do
     end
   end
 
+  it "can refresh a lock's expiration" do
+    assert @mutex.try_lock
+
+    # Reduce TTL of lock key
+    @redis.expire(@mutex.key, 10)
+
+    assert @mutex.refresh
+    assert_in_delta @mutex.timeout, @redis.ttl(@mutex.key), 1, "Redis lock key should be fresh"
+  end
+
   private
 
   def doppelganger

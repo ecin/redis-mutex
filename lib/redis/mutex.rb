@@ -55,6 +55,11 @@ class Redis::Mutex
     unlock
   end
 
+  def refresh
+    raise ThreadError, "can only refresh owned lock" unless owned?
+    @redis.expire(key, timeout)
+  end
+
   private
 
   def signature
