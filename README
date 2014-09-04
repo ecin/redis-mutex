@@ -7,5 +7,7 @@ Differences:
 - Redis::Mutex#synchronize raises ArgumentError instead of ThreadError if no block
   is passed.
 - Redis::Mutex#unlock does not raise ThreadError if the lock hasn't been acquired.
+- Redis::Mutex#unlock returns a boolean instead of self.
 
 Plus, Redis::Mutex#refresh is available to renew the expiration of an acquired lock.
+
