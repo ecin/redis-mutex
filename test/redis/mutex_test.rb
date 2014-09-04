@@ -128,6 +128,14 @@ describe Redis::Mutex do
     assert_in_delta @mutex.timeout, @redis.ttl(@mutex.key), 1, "Redis lock key should be fresh"
   end
 
+  it "fails to refresh an expired lock" do
+    assert @mutex.try_lock
+
+    @redis.del(@mutex.key)
+
+    refute @mutex.refresh
+  end
+
   private
 
   def doppelganger

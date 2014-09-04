@@ -12,6 +12,15 @@ class Redis::Mutex
     end
   SCRIPT
 
+  REFRESH_SCRIPT = <<-SCRIPT
+    if redis.call("get",KEYS[1]) == ARGV[1]
+    then
+      return redis.call("expire",KEYS[1],ARGV[2])
+    else
+      return 0
+    end
+  SCRIPT
+
   attr_reader :key, :timeout
 
   def initialize(redis, key: SecureRandom.hex(16), timeout: 60)
@@ -56,8 +65,7 @@ class Redis::Mutex
   end
 
   def refresh
-    raise ThreadError, "can only refresh owned lock" unless owned?
-    @redis.expire(key, timeout)
+    @redis.eval(REFRESH_SCRIPT, [key], [signature, timeout]) == 1
   end
 
   private
