@@ -65,7 +65,7 @@ describe Redis::Mutex do
   end
 
   it "has an expiration" do
-    assert @mutex.lock
+    assert @mutex.try_lock
     assert_in_delta @mutex.timeout, @redis.ttl(@mutex.key), 1, "Redis lock key should expire"
   end
 
