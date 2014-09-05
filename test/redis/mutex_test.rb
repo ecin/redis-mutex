@@ -14,7 +14,6 @@ describe Redis::Mutex do
 
   after do
     @doppelganger = nil
-    @mutex.unlock
     @redis.flushdb
   end
 
