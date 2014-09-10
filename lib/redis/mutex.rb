@@ -1,4 +1,5 @@
 require "redis"
+require "redis/with_script_caching"
 require "securerandom"
 
 # Public: A Redis-backed mutex implementation that is compatible with Ruby's
@@ -52,7 +53,7 @@ class Redis::Mutex
   attr_reader :key, :timeout
 
   def initialize(redis, options = { key: SecureRandom.hex(16), timeout: 60 })
-    @redis = redis
+    @redis = Redis::WithScriptCaching.new(redis)
     @key = options[:key]
     @timeout = options[:timeout]
   end
