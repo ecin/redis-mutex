@@ -17,6 +17,10 @@ describe Redis::Mutex do
     @redis.flushdb
   end
 
+  it "tries to connect to default Redis" do
+    assert Redis::Mutex.new.try_lock
+  end
+
   it "can acquire a lock" do
     assert @mutex.try_lock
     refute @redis.get(@mutex.key).nil?, "Redis lock key should be set"
