@@ -21,6 +21,21 @@ describe Redis::Mutex do
     assert Redis::Mutex.new.try_lock
   end
 
+  it "has default values for :timeout and :key options" do
+    refute @mutex.key.nil?
+    refute @mutex.timeout.nil?
+  end
+
+  it "has default values for options even if one key is set" do
+    mutex = Redis::Mutex.new @redis, timeout: 50
+    refute mutex.key.nil?
+    assert_equal 50, mutex.timeout
+
+    mutex = Redis::Mutex.new @redis, key: "secret"
+    refute mutex.timeout.nil?
+    assert_equal "secret", mutex.key
+  end
+
   it "can acquire a lock" do
     assert @mutex.try_lock
     refute @redis.get(@mutex.key).nil?, "Redis lock key should be set"

@@ -52,10 +52,10 @@ class Redis::Mutex
 
   attr_reader :key, :timeout
 
-  def initialize(redis = Redis.new, options = { key: SecureRandom.hex(16), timeout: 60 })
+  def initialize(redis = Redis.new, options = {})
     @redis = Redis::WithScriptCaching.new(redis)
-    @key = options[:key]
-    @timeout = options[:timeout]
+    @key = options.fetch :key, SecureRandom.hex(16)
+    @timeout = options.fetch :timeout, 60
   end
 
   def lock
