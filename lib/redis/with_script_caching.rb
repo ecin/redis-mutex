@@ -6,7 +6,7 @@ class Redis::WithScriptCaching
 
   def_delegators :@redis, :respond_to?
 
-  def initialize(redis)
+  def initialize(redis = Redis.new)
     @redis = redis
     @cache = Hash.new { |cache, script| cache[script] = redis.script(:load, script) }
   end
