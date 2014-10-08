@@ -39,4 +39,12 @@ describe Redis::WithScriptCaching do
     @redis.verify
   end
 
+  it "responds to Redis commands" do
+    @script_caching_redis = Redis::WithScriptCaching.new(Redis.new)
+
+    %w(get set del).each do |command|
+      assert @script_caching_redis.respond_to?(command)
+    end
+  end
+
 end
